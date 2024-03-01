@@ -2,73 +2,113 @@
 # Date : 3.1.2024
 
 
-
 import random
 import pickle
 
-# Game variables
-player = {'name':'', 'level':1, 'exp':0, 'hp':10, 'gold':0}
-monsters = [{'name':'Goblin', 'hp':5, 'exp':10, 'gold':5},
-            {'name':'Orc', 'hp':8, 'exp':15, 'gold':8},
-            {'name':'Troll', 'hp':12, 'exp':20, 'gold':10}]
-
-# World map
-world_map = {
-  # World map definition
+# Global game state
+game_state = {
+    'player': {},
+    'locations': {},
+    'quests': {},
+    'factions': {},
+    'abilities': {},
+    'spells': {},
+    'crafting_recipes': {},
+    'magic_schools': {},
+    # ... (add more as needed)
 }
 
 # Character creation
 def create_character():
-    # Character creation code
+    player_name = input("Enter your character's name: ")
+    player_race = input("Choose your race (Human, Elf, Dwarf): ")
+    player_class = input("Choose your class (Warrior, Mage, Rogue): ")
 
-# Main quests
-main_quests = {
-  # Main quests definition
-}
+    # Set initial attributes based on race and class
+    initial_attributes = {'strength': 5, 'intelligence': 5, 'dexterity': 5}
+    if player_race == 'Elf':
+        initial_attributes['intelligence'] += 2
+    elif player_race == 'Dwarf':
+        initial_attributes['strength'] += 2
 
-# Factions
-factions = {
-  # Factions definition
-}
+    game_state['player'] = {
+        'name': player_name,
+        'race': player_race,
+        'class': player_class,
+        'attributes': initial_attributes,
+        'level': 1,
+        'experience': 0,
+        'health': 10,
+        'mana': 10,
+        'gold': 0,
+        'inventory': [],
+        'equipment': {},
+        'skills': {},
+        'status_effects': [],
+        'location': 'Starting Town',
+    }
 
-# Classes
-classes = {
-  # Classes definition
-}
+# Location definition
+def create_location(name, description, quests=None, enemies=None, treasures=None):
+    game_state['locations'][name] = {
+        'description': description,
+        'quests': quests or [],
+        'enemies': enemies or [],
+        'treasures': treasures or [],
+        # ... (add more properties as needed)
+    }
 
-# Inventory
-inventory = {
-  # Inventory definition
-}
+# Quest definition
+def create_quest(name, description, rewards=None, prerequisites=None):
+    game_state['quests'][name] = {
+        'description': description,
+        'rewards': rewards or {},
+        'prerequisites': prerequisites or {},
+        'status': 'available',  # or 'completed', 'failed', etc.
+        # ... (add more properties as needed)
+    }
 
-# NPC interactions
-def interact_npc(npc):
-     # NPC interaction code
+# Ability definition
+def create_ability(name, description, damage_range):
+    game_state['abilities'][name] = {
+        'description': description,
+        'damage_range': damage_range,
+        # ... (add more properties as needed)
+    }
 
-# Day/night cycle
-day = 0
-def next_day():
-     # Day/night cycle code
+# Spell definition
+def create_spell(name, description, mana_cost, effect):
+    game_state['spells'][name] = {
+        'description': description,
+        'mana_cost': mana_cost,
+        'effect': effect,
+        # ... (add more properties as needed)
+    }
 
-# Hunger
-hunger = 0
-def eat(food, hp):
-    #Eating code
+# Crafting recipe definition
+def create_crafting_recipe(name, ingredients, result):
+    game_state['crafting_recipes'][name] = {
+        'ingredients': ingredients,
+        'result': result,
+        # ... (add more properties as needed)
+    }
 
-# Magic
-spells = {
-  # Magic spells definition
-}
-def cast_spell(spell):
-    # Spell casting code
+# Magic school definition
+def create_magic_school(name, spells):
+    game_state['magic_schools'][name] = {
+        'spells': spells,
+        # ... (add more properties as needed)
+    }
 
-# Saving/loading
-def save_game():
-  # Use pickle to serialize game state
-  with open('save.dat', 'wb') as f:
-    pickle.dump(world_map, f)
+# ... (add more functions to create factions, mini-games, etc.)
 
-def load_game():
-  # Use pickle to deserialize game state
-  with open('save.dat', 'rb') as f:
-    world_map = pickle.load(f)
+# Game initialization
+def initialize_game():
+    create_character()
+    create_location('Starting Town', 'A small town to begin your journey.')
+
+# Example usage:
+initialize_game()
+print(game_state)
+
+
